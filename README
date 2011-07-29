@@ -1,0 +1,22 @@
+Aim: 
+invoke ajaxCall for onkeyup events only after there's a 200ms pause between keypresses.
+
+Approach: 
+do it all in JavaScript and post the text to the server via REST.
+
+Demonstation:
+
+sbt> jetty-run 
+
+The home page has a text field, and under the text field is the result of a Wiring-based list 
+of the words in your text.  This will currently show List()
+
+Type in "hello world".
+Notice the server log shows: Tokenized: List(hello, world)
+Notice no change to the wiring, it still shows List()
+Refresh the page or hit return, observe the List(hello, world) in the wired field.
+
+
+
+
+

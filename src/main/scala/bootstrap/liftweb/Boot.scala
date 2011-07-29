@@ -19,6 +19,8 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("code")
 
+ LiftRules.dispatch.append(code.snippet.HelloWorld)
+
     // Build SiteMap
     val entries = List(
       Menu.i("Home") / "index", // the simple way to declare a menu

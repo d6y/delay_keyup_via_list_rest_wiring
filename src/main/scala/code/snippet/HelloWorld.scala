@@ -4,20 +4,36 @@ package snippet
 import scala.xml.{NodeSeq, Text}
 import net.liftweb.util._
 import net.liftweb.common._
-import java.util.Date
 import code.lib._
 import Helpers._
 
-class HelloWorld {
-  lazy val date: Box[Date] = DependencyFactory.inject[Date] // inject the date
+import net.liftweb.http.S
+import net.liftweb.util.ValueCell
+import net.liftweb.http.WiringUI
+import net.liftweb.http.SHtml
+import net.liftweb.json._
 
-  // replace the contents of the element with id "time" with the date
-  def howdy = "#time *" #> date.map(_.toString)
+import net.liftweb.http.rest.RestHelper
 
-  /*
-   lazy val date: Date = DependencyFactory.time.vend // create the date via factory
+object HelloWorld extends RestHelper with Loggable {
 
-   def howdy = "#time *" #> date.toString
-   */
+	private val words = ValueCell[List[String]](Nil)  
+ 
+	def render = "#words" #> WiringUI.asText(words)
+
+	serve {
+		case "tokenize" :: Nil Post _ => for { sentence <- S.param("sentence") ?~ "no text" ~> 400
+    		} yield { 
+	    		tokenize(sentence)
+	    		JNull 
+	    	}    
+	}
+
+	private def tokenize(text: String) {
+		val toks = text.split("\\W").toList
+		logger.info("Tokenized: "+toks)
+		words.set(toks)
+	}
+
 }
 
